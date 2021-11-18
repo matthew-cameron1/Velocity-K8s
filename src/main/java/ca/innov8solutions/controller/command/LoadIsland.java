@@ -29,7 +29,7 @@ public class LoadIsland implements SimpleCommand {
 
 		if (args.length == 1) {
 			String name = args[0];
-			IslandRequest request = new IslandRequest(name, plugin.getNetworkService().findLeastLoaded());
+			IslandRequest request = new IslandRequest(name, plugin.getNetworkService().getServerObject(plugin.getNetworkService().findLeastIslandDenseContainer()));
 			plugin.getChannelManager().loadIsland(request);
 		} else {
 			commandSource.sendMessage(Component.text("/load [username] - loads users island onto least loaded node"));

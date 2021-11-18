@@ -14,6 +14,7 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import com.velocitypowered.api.proxy.server.ServerInfo;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -71,9 +72,12 @@ public class Controller {
 
 	@Subscribe
 	public void onJoin(ServerPreConnectEvent event) {
-		ServerObject leastLoaded = this.networkService.findLeastLoaded();
+		String leastLoadedContainer = this.networkService.findLeastIslandDenseContainer();
+		ServerObject leastLoaded = this.networkService.getServerObject(leastLoadedContainer);
 		event.setResult(ServerPreConnectEvent.ServerResult.allowed(getVelocityServer(leastLoaded.getPort())));
-		System.out.println("This should work");
+		System.out.println("Routing to least loaded island server");
+
+		//TODO jedis - send load island
 	}
 
 	public RegisteredServer getVelocityServer(int port) {

@@ -37,7 +37,9 @@ public class ChannelManager {
 						System.out.println("Getting object from Relay:");
 						System.out.println(object.toString());
 
-						service.addServer(object);
+						String containerName = service.containerFromServerObject(object);
+
+						service.addServer(containerName, object);
 					} else if (subChannel.equalsIgnoreCase("slotUpdate")) {
 						ServerObject object = gson.fromJson(message, ServerObject.class);
 
@@ -63,7 +65,7 @@ public class ChannelManager {
 	public void loadIsland(IslandRequest island) {
 		Jedis jedis = pool.getResource();
 		if (island.getObject() == null) {
-			island.setObject(service.findLeastLoaded());
+			island.setObject(service.getServerObject(service.findLeastIslandDenseContainer()));
 		}
 		jedis.publish("sb-relay:loadIsland", gson.toJson(island));
 	}
