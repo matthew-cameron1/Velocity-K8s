@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  generateName: skyblock-
+  namespace: skyblock-server
+  labels:
+    app: skyblock-server
+spec:
+  hostNetwork: true
+  containers:
+    - name: skyblock-server
+      image: mcameron1/server-docker
+      ports:
+        - containerPort: 25565
